@@ -34,66 +34,62 @@ ALTER TABLE public.folders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.scores ENABLE ROW LEVEL SECURITY;
 
 -- 5. POLÍTICAS RLS PARA TABLA 'folders'
--- Lectura pública para cualquier usuario (músico / visitante anónimo y autenticado)
 DROP POLICY IF EXISTS "Permitir lectura publica de carpetas" ON public.folders;
 CREATE POLICY "Permitir lectura publica de carpetas"
 ON public.folders FOR SELECT
 TO anon, authenticated
 USING (true);
 
--- Modificación exclusiva para administradores autenticados
-DROP POLICY IF EXISTS "Permitir insercion solo a admin" ON public.folders;
-CREATE POLICY "Permitir insercion solo a admin"
+DROP POLICY IF EXISTS "Permitir insercion de carpetas" ON public.folders;
+CREATE POLICY "Permitir insercion de carpetas"
 ON public.folders FOR INSERT
-TO authenticated
+TO anon, authenticated
 WITH CHECK (true);
 
-DROP POLICY IF EXISTS "Permitir actualizacion solo a admin" ON public.folders;
-CREATE POLICY "Permitir actualizacion solo a admin"
+DROP POLICY IF EXISTS "Permitir actualizacion de carpetas" ON public.folders;
+CREATE POLICY "Permitir actualizacion de carpetas"
 ON public.folders FOR UPDATE
-TO authenticated
+TO anon, authenticated
 USING (true)
 WITH CHECK (true);
 
-DROP POLICY IF EXISTS "Permitir eliminacion solo a admin" ON public.folders;
-CREATE POLICY "Permitir eliminacion solo a admin"
+DROP POLICY IF EXISTS "Permitir eliminacion de carpetas" ON public.folders;
+CREATE POLICY "Permitir eliminacion de carpetas"
 ON public.folders FOR DELETE
-TO authenticated
+TO anon, authenticated
 USING (true);
 
 -- 6. POLÍTICAS RLS PARA TABLA 'scores'
--- Lectura pública para cualquier usuario
 DROP POLICY IF EXISTS "Permitir lectura publica de partituras" ON public.scores;
 CREATE POLICY "Permitir lectura publica de partituras"
 ON public.scores FOR SELECT
 TO anon, authenticated
 USING (true);
 
--- Modificación exclusiva para administradores autenticados
-DROP POLICY IF EXISTS "Permitir insercion de partituras solo a admin" ON public.scores;
-CREATE POLICY "Permitir insercion de partituras solo a admin"
+DROP POLICY IF EXISTS "Permitir insercion de partituras" ON public.scores;
+CREATE POLICY "Permitir insercion de partituras"
 ON public.scores FOR INSERT
-TO authenticated
+TO anon, authenticated
 WITH CHECK (true);
 
-DROP POLICY IF EXISTS "Permitir actualizacion de partituras solo a admin" ON public.scores;
-CREATE POLICY "Permitir actualizacion de partituras solo a admin"
+DROP POLICY IF EXISTS "Permitir actualizacion de partituras" ON public.scores;
+CREATE POLICY "Permitir actualizacion de partituras"
 ON public.scores FOR UPDATE
-TO authenticated
+TO anon, authenticated
 USING (true)
 WITH CHECK (true);
 
-DROP POLICY IF EXISTS "Permitir eliminacion de partituras solo a admin" ON public.scores;
-CREATE POLICY "Permitir eliminacion de partituras solo a admin"
+DROP POLICY IF EXISTS "Permitir eliminacion de partituras" ON public.scores;
+CREATE POLICY "Permitir eliminacion de partituras"
 ON public.scores FOR DELETE
-TO authenticated
+TO anon, authenticated
 USING (true);
 
 -- ==============================================================================
 -- 7. CONFIGURACIÓN DEL STORAGE BUCKET: 'scores'
 -- ==============================================================================
 
--- Crear el bucket de almacenamiento si no existe (público para lectura directa en Safari/Chrome)
+-- Crear el bucket de almacenamiento si no existe
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
     'scores',
@@ -107,30 +103,33 @@ ON CONFLICT (id) DO UPDATE SET
     file_size_limit = 52428800,
     allowed_mime_types = ARRAY['application/pdf'];
 
--- Políticas de Storage RLS
+-- Políticas de Storage para el bucket 'scores'
 DROP POLICY IF EXISTS "Lectura publica de PDFs en storage" ON storage.objects;
 CREATE POLICY "Lectura publica de PDFs en storage"
 ON storage.objects FOR SELECT
 TO anon, authenticated
 USING (bucket_id = 'scores');
 
+DROP POLICY IF EXISTS "Subida de PDFs a storage" ON storage.objects;
 DROP POLICY IF EXISTS "Subida de PDFs solo a admin" ON storage.objects;
-CREATE POLICY "Subida de PDFs solo a admin"
+CREATE POLICY "Subida de PDFs a storage"
 ON storage.objects FOR INSERT
-TO authenticated
+TO anon, authenticated
 WITH CHECK (bucket_id = 'scores');
 
+DROP POLICY IF EXISTS "Actualizacion de PDFs en storage" ON storage.objects;
 DROP POLICY IF EXISTS "Actualizacion de PDFs solo a admin" ON storage.objects;
-CREATE POLICY "Actualizacion de PDFs solo a admin"
+CREATE POLICY "Actualizacion de PDFs en storage"
 ON storage.objects FOR UPDATE
-TO authenticated
+TO anon, authenticated
 USING (bucket_id = 'scores')
 WITH CHECK (bucket_id = 'scores');
 
+DROP POLICY IF EXISTS "Eliminacion de PDFs en storage" ON storage.objects;
 DROP POLICY IF EXISTS "Eliminacion de PDFs solo a admin" ON storage.objects;
-CREATE POLICY "Eliminacion de PDFs solo a admin"
+CREATE POLICY "Eliminacion de PDFs en storage"
 ON storage.objects FOR DELETE
-TO authenticated
+TO anon, authenticated
 USING (bucket_id = 'scores');
 
 -- ==============================================================================
@@ -142,7 +141,6 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 DECLARE
-    -- El PIN se valida en el servidor PostgreSQL (no expuesto en frontend)
     stored_pin TEXT := '1102';
 BEGIN
     RETURN (trim(pin_input) = stored_pin);
