@@ -1,0 +1,13 @@
+node_modules
+.git
+.github
+.gitignore
+.assetsignore
+supabase
+server.js
+package.json
+package-lock.json
+bun.lock
+bun.lockb
+README.md
+wrangler.jsonc
