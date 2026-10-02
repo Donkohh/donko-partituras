@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Donko Partituras - Biblioteca Musical</title>
+  
+  <!-- Optimización para iPad / iOS Safari y PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Partituras">
+  <meta name="theme-color" content="#090d16">
+  <meta name="description" content="Biblioteca web rápida y minimalista para lectura y administración de partituras en PDF.">
+
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Supabase JS Client desde CDN oficial -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- CABECERA PRINCIPAL -->
+    <header class="app-header">
+      <a href="#" id="brand-link" class="brand">
+        <span class="brand-icon">🎵</span>
+        <h1 class="brand-title">Donko Partituras</h1>
+      </a>
+      <div class="header-actions">
+        <button id="btn-admin" class="btn-icon" title="Acceso Administrativo" aria-label="Administración">
+          🔒
+        </button>
+      </div>
+    </header>
+
+    <!-- BARRA DE BÚSQUEDA REACTIVA -->
+    <div class="search-wrapper">
+      <span class="search-icon-left">🔎</span>
+      <input 
+        type="text" 
+        id="search-input" 
+        class="search-input" 
+        placeholder="Buscar partitura..." 
+        autocomplete="off" 
+        autocorrect="off" 
+        spellcheck="false"
+      >
+      <button id="search-clear-btn" class="search-clear-btn" title="Limpiar búsqueda">✕</button>
+    </div>
+
+    <!-- NAVEGACIÓN BREADCRUMB (CUANDO SE ENTRA A UNA CARPETA) -->
+    <div id="breadcrumb-container" style="display: none;"></div>
+
+    <!-- SECCIÓN DE CARPETAS (OCULTA DENTRO DE CARPETA O EN BÚSQUEDA) -->
+    <section id="folders-section" class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span>📁</span> Carpetas
+        </h2>
+        <span id="folders-count" class="section-count">0</span>
+      </div>
+      <div id="folders-grid" class="folders-grid">
+        <!-- Renderizado dinámico de carpetas -->
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE PARTITURAS -->
+    <section class="section">
+      <div class="section-header">
+        <h2 id="scores-title" class="section-title">
+          <span>🎵</span> Biblioteca General
+        </h2>
+        <span id="scores-count" class="section-count">0</span>
+      </div>
+      <div id="scores-container">
+        <!-- Renderizado dinámico de partituras -->
+      </div>
+    </section>
+
+    <!-- ==============================================================================
+         PANEL DE ADMINISTRACIÓN (SOLO VISIBLE CON SESIÓN AUTENTICADA)
+         ============================================================================== -->
+    <section id="admin-panel" class="section" style="display: none; margin-top: 3rem;">
+      <div class="admin-header-bar">
+        <div class="admin-status">
+          <span class="status-dot"></span>
+          <span>Panel de Administración</span>
+          <span class="admin-badge">Admin</span>
+        </div>
+        <button id="btn-admin-logout" class="btn btn-secondary btn-sm">
+          Cerrar Sesión
+        </button>
+      </div>
+
+      <!-- SUBIDA DE PDFs (DRAG & DROP / MULTI-UPLOAD) -->
+      <div class="section" style="margin-bottom: 2rem;">
+        <div class="section-header">
+          <h3 class="section-title"><span>⬆️</span> Subir Partituras (PDF)</h3>
+        </div>
+
+        <div class="upload-target-selector">
+          <label for="upload-target-folder">Destino de subida:</label>
+          <select id="upload-target-folder" class="select-input">
+            <option value="">📁 Biblioteca General</option>
+          </select>
+        </div>
+
+        <input type="file" id="file-upload-input" accept="application/pdf,.pdf" multiple style="display: none;">
+        
+        <div id="upload-dropzone" class="upload-dropzone">
+          <div class="dropzone-icon">📄</div>
+          <div class="dropzone-title">Arrastra tus archivos PDF aquí</div>
+          <div class="dropzone-subtitle">o toca para seleccionar uno o varios PDFs desde tu dispositivo</div>
+        </div>
+
+        <!-- Progreso de subida en tiempo real -->
+        <div id="upload-progress-container" class="upload-progress-container"></div>
+      </div>
+
+      <!-- GESTIÓN DE CARPETAS TEMPORALES -->
+      <div class="section" style="margin-bottom: 2rem;">
+        <div class="section-header">
+          <h3 class="section-title"><span>📁</span> Crear / Gestionar Carpetas</h3>
+        </div>
+        
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+          <input 
+            type="text" 
+            id="input-folder-name" 
+            class="search-input" 
+            style="height: 44px; margin-bottom: 0;" 
+            placeholder="Nombre de la carpeta (Ej. Ensayo martes)"
+          >
+          <button id="btn-create-folder" class="btn btn-primary" style="flex-shrink: 0;">
+            + Crear Carpeta
+          </button>
+        </div>
+
+        <div id="admin-folders-list" class="scores-list">
+          <!-- Lista de carpetas con opción de eliminar -->
+        </div>
+      </div>
+
+      <!-- GESTIÓN DE PARTITURAS EXISTENTES -->
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title"><span>⚙️</span> Todas las Partituras Registradas</h3>
+        </div>
+        <div id="admin-scores-table" class="scores-list">
+          <!-- Lista de partituras para eliminar o renombrar -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ==============================================================================
+       MODALES DE LA APLICACIÓN
+       ============================================================================== -->
+
+  <!-- 1. MODAL DE AUTENTICACIÓN POR PIN -->
+  <div id="pin-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🔒 Panel Administrativo</h3>
+        <p class="modal-subtitle">Introduce el PIN administrativo para gestionar la biblioteca.</p>
+      </div>
+      <div class="modal-body">
+        <input 
+          type="password" 
+          id="pin-input" 
+          class="pin-display" 
+          placeholder="••••" 
+          maxlength="8" 
+          readonly 
+          inputmode="numeric"
+        >
+        <!-- Teclado numérico táctil (optimizado para iPad) -->
+        <div class="pin-keypad">
+          <button class="keypad-btn" data-val="1">1</button>
+          <button class="keypad-btn" data-val="2">2</button>
+          <button class="keypad-btn" data-val="3">3</button>
+          <button class="keypad-btn" data-val="4">4</button>
+          <button class="keypad-btn" data-val="5">5</button>
+          <button class="keypad-btn" data-val="6">6</button>
+          <button class="keypad-btn" data-val="7">7</button>
+          <button class="keypad-btn" data-val="8">8</button>
+          <button class="keypad-btn" data-val="9">9</button>
+          <button class="keypad-btn" data-val="clear">C</button>
+          <button class="keypad-btn" data-val="0">0</button>
+          <button class="keypad-btn" data-val="backspace">⌫</button>
+        </div>
+        <div id="pin-error" style="color: var(--accent-danger); font-size: 0.85rem; text-align: center; min-height: 20px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="pin-close-btn" class="btn btn-secondary">Cancelar</button>
+        <button id="pin-submit-btn" class="btn btn-primary">Ingresar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MODAL DE DUPLICADOS -->
+  <div id="duplicate-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">⚠️ Archivo Duplicado</h3>
+        <p class="modal-subtitle">Ya existe una partitura con el nombre <strong id="duplicate-filename" style="color: var(--accent-cyan);"></strong>. ¿Qué deseas hacer?</p>
+      </div>
+      <div class="modal-footer" style="flex-wrap: wrap;">
+        <button id="btn-dup-cancel" class="btn btn-secondary btn-sm">Cancelar</button>
+        <button id="btn-dup-keep-both" class="btn btn-secondary btn-sm">Mantener ambos</button>
+        <button id="btn-dup-replace" class="btn btn-primary btn-sm">Reemplazar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MODAL DE ELIMINACIÓN DE CARPETA -->
+  <div id="delete-folder-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🗑️ Eliminar Carpeta</h3>
+        <p class="modal-subtitle">¿Qué deseas hacer con la carpeta <strong id="delete-folder-name" style="color: var(--accent-cyan);"></strong>?</p>
+      </div>
+      <div class="modal-body">
+        <div class="radio-option-group">
+          <!-- Opción 1: Predeterminada y más segura -->
+          <label class="radio-option">
+            <input type="radio" name="folder-delete-mode" value="only_folder" checked>
+            <div>
+              <div class="radio-label">Eliminar solamente la carpeta</div>
+              <div class="radio-desc">Las partituras permanecerán seguras en la biblioteca general.</div>
+            </div>
+          </label>
+          <!-- Opción 2: Eliminar carpeta y sus partituras específicas -->
+          <label class="radio-option">
+            <input type="radio" name="folder-delete-mode" value="with_files">
+            <div>
+              <div class="radio-label">Eliminar la carpeta y sus partituras</div>
+              <div class="radio-desc">Los archivos contenidos en esta carpeta también serán eliminados.</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-cancel-delete-folder" class="btn btn-secondary">Cancelar</button>
+        <button id="btn-confirm-delete-folder" class="btn btn-danger">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. MODAL DE ELIMINACIÓN DE PARTITURA -->
+  <div id="delete-score-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🗑️ Eliminar Partitura</h3>
+        <p class="modal-subtitle">¿Estás seguro de que deseas eliminar la partitura <strong id="delete-score-name" style="color: var(--accent-cyan);"></strong>?</p>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Esta acción eliminará el archivo PDF del almacenamiento de forma permanente.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-cancel-delete-score" class="btn btn-secondary">Cancelar</button>
+        <button id="btn-confirm-delete-score" class="btn btn-danger">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENEDOR DE ALERTAS TOAST -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- SCRIPT PRINCIPAL ES MODULES -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

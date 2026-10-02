@@ -1,0 +1,13 @@
+{
+  "name": "donko-partituras",
+  "version": "1.0.0",
+  "description": "Biblioteca web rápida, segura y minimalista para lectura y administración de partituras en PDF.",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1"
+  }
+}
