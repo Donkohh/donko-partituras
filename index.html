@@ -9,8 +9,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Partituras">
-  <meta name="theme-color" content="#090d16">
-  <meta name="description" content="Biblioteca web rápida y minimalista para lectura y administración de partituras en PDF.">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="description" content="Biblioteca web para consulta rápida, organización y lectura de partituras en PDF.">
+
+  <!-- Tipografía Inter / System Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Estilos principales -->
   <link rel="stylesheet" href="css/styles.css">
@@ -23,30 +28,52 @@
   <div class="app-container">
     <!-- CABECERA PRINCIPAL -->
     <header class="app-header">
-      <a href="#" id="brand-link" class="brand">
-        <span class="brand-icon">🎵</span>
-        <h1 class="brand-title">Donko Partituras</h1>
+      <a href="#" id="brand-link" class="brand" title="Ir al inicio de la biblioteca">
+        <span class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+          </svg>
+        </span>
+        <div class="brand-text">
+          <h1 class="brand-title">Donko Partituras</h1>
+          <span class="brand-subtitle">Biblioteca Musical</span>
+        </div>
       </a>
       <div class="header-actions">
         <button id="btn-admin" class="btn-icon" title="Acceso Administrativo" aria-label="Administración">
-          🔒
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
         </button>
       </div>
     </header>
 
     <!-- BARRA DE BÚSQUEDA REACTIVA -->
     <div class="search-wrapper">
-      <span class="search-icon-left">🔎</span>
+      <span class="search-icon-left">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
       <input 
         type="text" 
         id="search-input" 
         class="search-input" 
-        placeholder="Buscar partitura..." 
+        placeholder="Buscar por título de obra o autor..." 
         autocomplete="off" 
         autocorrect="off" 
         spellcheck="false"
       >
-      <button id="search-clear-btn" class="search-clear-btn" title="Limpiar búsqueda">✕</button>
+      <button id="search-clear-btn" class="search-clear-btn" title="Limpiar búsqueda" aria-label="Limpiar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
 
     <!-- NAVEGACIÓN BREADCRUMB (CUANDO SE ENTRA A UNA CARPETA) -->
@@ -56,7 +83,10 @@
     <section id="folders-section" class="section">
       <div class="section-header">
         <h2 class="section-title">
-          <span>📁</span> Carpetas
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Carpetas
         </h2>
         <span id="folders-count" class="section-count">0</span>
       </div>
@@ -69,7 +99,14 @@
     <section class="section">
       <div class="section-header">
         <h2 id="scores-title" class="section-title">
-          <span>🎵</span> Biblioteca General
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          Biblioteca General
         </h2>
         <span id="scores-count" class="section-count">0</span>
       </div>
@@ -81,22 +118,34 @@
     <!-- ==============================================================================
          PANEL DE ADMINISTRACIÓN (SOLO VISIBLE CON SESIÓN AUTENTICADA)
          ============================================================================== -->
-    <section id="admin-panel" class="section" style="display: none; margin-top: 3rem;">
+    <section id="admin-panel" class="section admin-panel-card" style="display: none;">
       <div class="admin-header-bar">
         <div class="admin-status">
           <span class="status-dot"></span>
-          <span>Panel de Administración</span>
+          <span class="admin-status-text">Panel de Administración</span>
           <span class="admin-badge">Admin</span>
         </div>
         <button id="btn-admin-logout" class="btn btn-secondary btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
           Cerrar Sesión
         </button>
       </div>
 
       <!-- SUBIDA DE PDFs (DRAG & DROP / MULTI-UPLOAD) -->
-      <div class="section" style="margin-bottom: 2rem;">
+      <div class="admin-subcard">
         <div class="section-header">
-          <h3 class="section-title"><span>⬆️</span> Subir Partituras (PDF)</h3>
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Subir Partituras (PDF)
+          </h3>
         </div>
 
         <div class="upload-target-selector">
@@ -108,10 +157,17 @@
 
         <input type="file" id="file-upload-input" accept="application/pdf,.pdf" multiple style="display: none;">
         
-        <div id="upload-dropzone" class="upload-dropzone">
-          <div class="dropzone-icon">📄</div>
+        <div id="upload-dropzone" class="upload-dropzone" tabindex="0" role="button" aria-label="Zona de carga de archivos PDF">
+          <div class="dropzone-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <polyline points="9 15 12 12 15 15"></polyline>
+            </svg>
+          </div>
           <div class="dropzone-title">Arrastra tus archivos PDF aquí</div>
-          <div class="dropzone-subtitle">o toca para seleccionar uno o varios PDFs desde tu dispositivo</div>
+          <div class="dropzone-subtitle">o pulsa para seleccionar uno o varios documentos desde el dispositivo</div>
         </div>
 
         <!-- Progreso de subida en tiempo real -->
@@ -119,35 +175,49 @@
       </div>
 
       <!-- GESTIÓN DE CARPETAS TEMPORALES -->
-      <div class="section" style="margin-bottom: 2rem;">
+      <div class="admin-subcard">
         <div class="section-header">
-          <h3 class="section-title"><span>📁</span> Crear / Gestionar Carpetas</h3>
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Crear y Gestionar Carpetas
+          </h3>
         </div>
         
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <div class="folder-create-row">
           <input 
             type="text" 
             id="input-folder-name" 
-            class="search-input" 
-            style="height: 44px; margin-bottom: 0;" 
-            placeholder="Nombre de la carpeta (Ej. Ensayo martes)"
+            class="search-input input-folder" 
+            placeholder="Nombre de la carpeta (ej. Repertorio Navidad, Concierto Junio)"
           >
-          <button id="btn-create-folder" class="btn btn-primary" style="flex-shrink: 0;">
-            + Crear Carpeta
+          <button id="btn-create-folder" class="btn btn-primary btn-create">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Crear Carpeta
           </button>
         </div>
 
-        <div id="admin-folders-list" class="scores-list">
+        <div id="admin-folders-list" class="scores-list admin-list">
           <!-- Lista de carpetas con opción de eliminar -->
         </div>
       </div>
 
       <!-- GESTIÓN DE PARTITURAS EXISTENTES -->
-      <div class="section">
+      <div class="admin-subcard">
         <div class="section-header">
-          <h3 class="section-title"><span>⚙️</span> Todas las Partituras Registradas</h3>
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Todas las Partituras Registradas
+          </h3>
         </div>
-        <div id="admin-scores-table" class="scores-list">
+        <div id="admin-scores-table" class="scores-list admin-list">
           <!-- Lista de partituras para eliminar o renombrar -->
         </div>
       </div>
@@ -162,8 +232,16 @@
   <div id="pin-modal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">🔒 Panel Administrativo</h3>
-        <p class="modal-subtitle">Introduce el PIN administrativo para gestionar la biblioteca.</p>
+        <div class="modal-header-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">Panel Administrativo</h3>
+          <p class="modal-subtitle">Introduce el PIN de acceso para gestionar la biblioteca musical.</p>
+        </div>
       </div>
       <div class="modal-body">
         <input 
@@ -186,11 +264,11 @@
           <button class="keypad-btn" data-val="7">7</button>
           <button class="keypad-btn" data-val="8">8</button>
           <button class="keypad-btn" data-val="9">9</button>
-          <button class="keypad-btn" data-val="clear">C</button>
+          <button class="keypad-btn keypad-btn-action" data-val="clear">C</button>
           <button class="keypad-btn" data-val="0">0</button>
-          <button class="keypad-btn" data-val="backspace">⌫</button>
+          <button class="keypad-btn keypad-btn-action" data-val="backspace">⌫</button>
         </div>
-        <div id="pin-error" style="color: var(--accent-danger); font-size: 0.85rem; text-align: center; min-height: 20px;"></div>
+        <div id="pin-error" class="pin-error-text"></div>
       </div>
       <div class="modal-footer">
         <button id="pin-close-btn" class="btn btn-secondary">Cancelar</button>
@@ -203,13 +281,22 @@
   <div id="duplicate-modal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">⚠️ Archivo Duplicado</h3>
-        <p class="modal-subtitle">Ya existe una partitura con el nombre <strong id="duplicate-filename" style="color: var(--accent-cyan);"></strong>. ¿Qué deseas hacer?</p>
+        <div class="modal-header-icon modal-icon-warning">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">Archivo Duplicado</h3>
+          <p class="modal-subtitle">Ya existe una partitura con el título <strong id="duplicate-filename" class="highlight-text"></strong>. ¿Cómo deseas proceder?</p>
+        </div>
       </div>
-      <div class="modal-footer" style="flex-wrap: wrap;">
+      <div class="modal-footer modal-footer-stacked">
         <button id="btn-dup-cancel" class="btn btn-secondary btn-sm">Cancelar</button>
-        <button id="btn-dup-keep-both" class="btn btn-secondary btn-sm">Mantener ambos</button>
-        <button id="btn-dup-replace" class="btn btn-primary btn-sm">Reemplazar</button>
+        <button id="btn-dup-keep-both" class="btn btn-secondary btn-sm">Conservar ambos</button>
+        <button id="btn-dup-replace" class="btn btn-primary btn-sm">Reemplazar existente</button>
       </div>
     </div>
   </div>
@@ -218,25 +305,33 @@
   <div id="delete-folder-modal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">🗑️ Eliminar Carpeta</h3>
-        <p class="modal-subtitle">¿Qué deseas hacer con la carpeta <strong id="delete-folder-name" style="color: var(--accent-cyan);"></strong>?</p>
+        <div class="modal-header-icon modal-icon-danger">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">Eliminar Carpeta</h3>
+          <p class="modal-subtitle">¿Cómo deseas eliminar la carpeta <strong id="delete-folder-name" class="highlight-text"></strong>?</p>
+        </div>
       </div>
       <div class="modal-body">
         <div class="radio-option-group">
           <!-- Opción 1: Predeterminada y más segura -->
           <label class="radio-option">
             <input type="radio" name="folder-delete-mode" value="only_folder" checked>
-            <div>
+            <div class="radio-content">
               <div class="radio-label">Eliminar solamente la carpeta</div>
-              <div class="radio-desc">Las partituras permanecerán seguras en la biblioteca general.</div>
+              <div class="radio-desc">Las partituras se conservarán en la biblioteca general sin perder ningún archivo.</div>
             </div>
           </label>
           <!-- Opción 2: Eliminar carpeta y sus partituras específicas -->
           <label class="radio-option">
             <input type="radio" name="folder-delete-mode" value="with_files">
-            <div>
+            <div class="radio-content">
               <div class="radio-label">Eliminar la carpeta y sus partituras</div>
-              <div class="radio-desc">Los archivos contenidos en esta carpeta también serán eliminados.</div>
+              <div class="radio-desc">Los archivos PDF contenidos en esta carpeta serán eliminados permanentemente.</div>
             </div>
           </label>
         </div>
@@ -252,11 +347,19 @@
   <div id="delete-score-modal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">🗑️ Eliminar Partitura</h3>
-        <p class="modal-subtitle">¿Estás seguro de que deseas eliminar la partitura <strong id="delete-score-name" style="color: var(--accent-cyan);"></strong>?</p>
+        <div class="modal-header-icon modal-icon-danger">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </div>
+        <div class="modal-header-text">
+          <h3 class="modal-title">Eliminar Partitura</h3>
+          <p class="modal-subtitle">¿Confirmas la eliminación permanente de <strong id="delete-score-name" class="highlight-text"></strong>?</p>
+        </div>
       </div>
       <div class="modal-body">
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Esta acción eliminará el archivo PDF del almacenamiento de forma permanente.</p>
+        <p class="modal-body-warning">Esta acción no se puede deshacer y el archivo PDF se borrará del almacenamiento de forma definitiva.</p>
       </div>
       <div class="modal-footer">
         <button id="btn-cancel-delete-score" class="btn btn-secondary">Cancelar</button>

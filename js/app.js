@@ -173,6 +173,7 @@ function renderScores() {
   if (state.searchQuery.trim() !== '') {
     // La búsqueda se realiza sobre la vista activa (General o Carpeta actual)
     const searchSet = state.scores;
+    const query = normalizeText(state.searchQuery.trim());
     filteredScores = searchSet.filter(score => normalizeText(score.title).includes(query));
   }
 
