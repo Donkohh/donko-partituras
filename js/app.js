@@ -171,9 +171,8 @@ function renderScores() {
   // Filtrado reactivo en memoria por búsqueda (insensible a mayúsculas/minúsculas y acentos)
   let filteredScores = state.scores;
   if (state.searchQuery.trim() !== '') {
-    const query = normalizeText(state.searchQuery);
-    // Si busca desde la vista general o dentro de carpeta, busca en el conjunto activo
-    const searchSet = state.currentFolder ? state.scores : state.allScores;
+    // La búsqueda se realiza sobre la vista activa (General o Carpeta actual)
+    const searchSet = state.scores;
     filteredScores = searchSet.filter(score => normalizeText(score.title).includes(query));
   }
 

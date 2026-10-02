@@ -355,40 +355,6 @@ export async function uploadPdfScore({ file, folderId = null, customTitle = null
     throw insertError;
   }
 
-  // 3. REQUISITO DE COPIAS INDEPENDIENTES:
-  // "Cuando subo un PDF directamente a una carpeta: debe ocurrir:
-  // El PDF se agrega a la biblioteca general y también a la carpeta como copias independientes."
-  if (folderId !== null) {
-    try {
-      const generalUniqueId = crypto.randomUUID ? crypto.randomUUID() : (Date.now() + 1).toString(36);
-      const generalFilePath = `general/${generalUniqueId}_${sanitizedFilename}`;
-
-      // Subir copia independiente en storage
-      const { error: copyUploadError } = await supabase.storage
-        .from(CONFIG.STORAGE_BUCKET)
-        .upload(generalFilePath, file, {
-          contentType: 'application/pdf',
-          upsert: false
-        });
-
-      if (!copyUploadError) {
-        // Registrar copia independiente en biblioteca general (folder_id = null)
-        await supabase
-          .from('scores')
-          .insert([{
-            title: rawTitle,
-            filename: originalFilename,
-            file_path: generalFilePath,
-            file_size: file.size,
-            mime_type: 'application/pdf',
-            folder_id: null // Biblioteca general
-          }]);
-      }
-    } catch (generalCopyErr) {
-      console.warn("Advertencia: No se pudo crear copia secundaria en biblioteca general:", generalCopyErr);
-    }
-  }
-
   return newScore;
 }
 
