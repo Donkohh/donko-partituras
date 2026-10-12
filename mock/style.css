@@ -1,0 +1,470 @@
+/* -------------------------------------------------
+   Donko Partituras – Visual Identity (Blue palette)
+   Primary:   #173653   (azul tinta)
+   Secondary: #315A7D   (azul secundario)
+   Background: #F8FAFC  (gris muy claro)
+   Text:       #172B40  (casi negro)
+   Line/Divider: #DCE4EC
+   Muted text:  #526579
+------------------------------------------------- */
+
+:root {
+  --color-bg: #F8FAFC; /* fondo claro */
+  --color-text: #172B40; /* texto principal */
+  --color-primary: #173653;   /* azul tinta */
+  --color-secondary: #315A7D; /* azul secundario */
+  --color-complement: #315A7D; /* azul complementario */
+  --color-accent: #D7B77A;   /* dorado apagado */
+  --color-line: #DCE4EC;      /* separadores */
+  --color-muted: #526579;    /* textos secundarios */
+  --font-serif: "Source Serif 4", serif;
+  --font-sans: "Public Sans", system-ui, sans-serif;
+  --spacing-base: 1rem;
+  --spacing-lg: 2rem;
+}
+
+
+
+
+
+/* Reset & base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  line-height: 1.5;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-base);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.2rem; margin-bottom: var(--spacing-base); }
+h2 { font-size: 1.8rem; margin-top: var(--spacing-lg); margin-bottom: var(--spacing-base); }
+h3 { font-size: 1.4rem; margin-bottom: var(--spacing-base); }
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.2s;
+}
+
+a:hover, a:focus {
+  border-bottom: 2px solid var(--color-primary);
+  outline: none;
+}
+
+/* Header */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-base);
+  padding-bottom: var(--spacing-base);
+}
+
+.site-title {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.main-nav {
+  display: flex;
+  gap: var(--spacing-base);
+}
+
+.nav-link {
+  font-weight: 500;
+  padding: 4px 0;
+}
+
+.nav-link.active {
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* Hero – tagline + search */
+.hero {
+  background: var(--color-bg);
+  padding: var(--spacing-lg) var(--spacing-base);
+  border-top: 4px solid var(--color-primary);
+}
+
+.hero-tagline {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  margin: 0 0 var(--spacing-base) 0;
+  color: var(--color-text);
+}
+
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.search-form input[type="search"] {
+  flex: 1;
+  font: inherit;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-muted);
+  border-radius: 4px;
+}
+
+.search-form button {
+  font: inherit;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.2rem;
+  cursor: pointer;
+}
+
+.search-form button:hover,
+.search-form button:focus {
+  background: #112d43; /* darker primary */
+}
+
+/* Featured collection */
+.featured-collection {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+  background: var(--color-line);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.collection-media {
+  flex: 1 1 40%;
+  height: 200px;
+  background: var(--color-bg);
+  /* placeholder – solid colour; can be replaced with real image */
+}
+
+.collection-info {
+  flex: 1 1 60%;
+}
+
+.collection-title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.collection-description {
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+.cta-primary {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.cta-primary:hover,
+.cta-primary:focus {
+  background: #112d43;
+}
+
+/* Other collections – typographic list */
+.other-collections .collections-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.other-collections .collections-list li {
+  border-left: 4px solid var(--color-primary);
+  background: #fff;
+  padding: var(--spacing-base);
+}
+
+.coll-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin: 0 0 0.25rem 0;
+  color: var(--color-primary);
+}
+
+.coll-desc {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-muted);
+}
+
+/* Catalog table */
+.catalog-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  margin-top: var(--spacing-base);
+}
+
+.catalog-table th,
+.catalog-table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.catalog-table th {
+  background: var(--color-line);
+  font-weight: 600;
+}
+
+.catalog-table tbody tr {
+  background: #fff;
+}
+
+.link-primary {
+  display: inline-block;
+  padding: 0.25rem 0;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+/* Footer */
+.site-footer {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-line);
+  padding-top: var(--spacing-base);
+}
+
+/* Section headings – reuse for consistency */
+.section-heading {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-base);
+  color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .featured-collection {
+    flex-direction: column;
+  }
+  .collection-media {
+    width: 100%;
+    height: 150px;
+  }
+}
+
+/* ----- Custom visual enhancements ----- */
+
+/* Site subtitle */
+.site-subtitle {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--color-muted);
+  margin-top: 0.25rem;
+}
+
+/* Hero background image and overlay */
+.hero {
+  position: relative;
+  background-image: url('images/hero.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff; /* ensure text readable */
+  padding: var(--spacing-lg) var(--spacing-base);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 30, 0.55);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section headings with gold accent */
+.section-heading {
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: 0.25rem;
+  margin-bottom: var(--spacing-base);
+}
+
+/* Collections list items gold left border */
+.collections-list li {
+  border-left: 4px solid var(--color-accent);
+  padding-left: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+}
+
+/* Responsive hero adjustments */
+@media (max-width: 768px) {
+  .hero {
+    height: 40vh;
+  }
+  .hero-title {
+    font-size: 1.8rem;
+  }
+}
+
+/* Additional hero text styling */
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin: 0 0 1rem 0;
+  color: #f0f0f0;
+}
+
+/* Ensure hero has sufficient height */
+.hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+/* ----------- HERO LAYOUT (editorial positioning) ----------- */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* alineado a la izquierda */
+  min-height: 60vh;
+  padding: var(--spacing-lg) var(--spacing-base);
+  background-image: url('images/hero.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff; /* texto sobre la foto */
+}
+
+.hero-inner {
+  max-width: 600px; /* ancho máximo del bloque de texto */
+  margin-left: var(--spacing-lg);
+}
+
+.hero-content {
+  position: relative; /* para que el overlay no lo cubra */
+  z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 30, 0.55); /* overlay azul profundo */
+  z-index: 0;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin: 0 0 1rem 0;
+  opacity: 0.9; /* contraste suave */
+}
+
+/* ----------- FEATURED COLLECTION (Coro Nacional) ----------- */
+.featured-collection {
+  position: relative;
+  background-image: url('images/hero.jpg'); /* reutiliza la foto como fondo */
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: var(--spacing-lg) var(--spacing-base);
+  margin-top: var(--spacing-lg);
+}
+
+.featured-collection::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 30, 0.55);
+}
+
+.featured-collection .section-heading,
+.featured-collection .collection-description,
+.featured-collection .cta-primary {
+  position: relative;
+  z-index: 1;
+}
+
+.featured-collection .section-heading {
+  border-bottom: none; /* evitamos subrayado en esta sección */
+  font-size: 1.8rem;
+  margin-bottom: var(--spacing-base);
+}
+
+.featured-collection .cta-primary {
+  background: var(--color-accent);
+  color: #212529; /* texto oscuro sobre dorado */
+  border: none;
+}
+
+/* ----------- OTHER COLLECTIONS (editorial list) ----------- */
+.other-collections {
+  background: var(--color-bg);
+  padding: var(--spacing-lg) var(--spacing-base);
+}
+
+.other-collections .collections-list li {
+  border-left-color: var(--color-accent); /* pequeño acento dorado */
+}
+
+/* ----------- RESPONSIVE ADJUSTMENTS ----------- */
+@media (max-width: 768px) {
+  .hero {
+    justify-content: center;
+    text-align: center;
+  }
+  .hero-inner {
+    margin-left: 0;
+  }
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}

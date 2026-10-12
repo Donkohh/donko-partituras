@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donko Partituras – Archivo coral</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Placeholder for hero photograph (replace with real image) -->
+  <link rel="preload" href="images/hero.jpg" as="image" />
+</head>
+<body>
+  <!-- Cabecera tipográfica -->
+  <header class="site-header">
+    <h1 class="site-title">Donko Partituras</h1>
+    <p class="site-subtitle">ARCHIVO DE MÚSICA CORAL</p>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="index.html" class="nav-link active" aria-current="page">Inicio</a>
+      <a href="catalog.html" class="nav-link">Catálogo</a>
+      <a href="collections.html" class="nav-link">Colecciones</a>
+    </nav>
+  </header>
+
+  <!-- Hero fotográfico con overlay oscuro -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h2 class="hero-title">La música coral merece ser preservada</h2>
+        <p class="hero-subtitle">Un archivo para descubrir obras, explorar arreglos y mantener viva la música que cantamos</p>
+        <form class="search-form" role="search" aria-label="Buscar obras, autores o colecciones">
+          <input type="search" placeholder="Buscar partituras…" aria-label="Buscar" />
+          <button type="submit">Buscar</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloque destacado – Coro Nacional -->
+  <section class="featured-collection">
+    <h2 class="section-heading">Coro Nacional</h2>
+    <p class="collection-description">El repertorio más representativo de la tradición coral cristiana, editado con rigor editorial y cuidado histórico.</p>
+    <a href="collection-nacional.html" class="cta-primary">Explorar colección</a>
+  </section>
+
+  <!-- Accesos secundarios a otras colecciones -->
+  <section class="other-collections">
+    <h2 class="section-heading">Otras colecciones</h2>
+    <ul class="collections-list">
+      <li>
+        <h3 class="coll-title">Coros Unidos</h3>
+        <p class="coll-desc">Repertorio diverso de coros locales y regionales.</p>
+        <a href="collection-unidos.html" class="link-primary">Ver colección</a>
+      </li>
+      <li>
+        <h3 class="coll-title">Arreglos Especiales</h3>
+        <p class="coll-desc">Versiones de obras clásicas adaptadas para distintos niveles.</p>
+        <a href="collection-especiales.html" class="link-primary">Ver colección</a>
+      </li>
+      <li>
+        <h3 class="coll-title">Himnarios Contemporáneos</h3>
+        <p class="coll-desc">Selección de himnos modernos para la liturgia actual.</p>
+        <a href="#" class="link-primary">Ver colección</a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Selección de obras recientes -->
+  <section class="catalog-preview">
+    <h2 class="section-heading">Últimas obras añadidas</h2>
+    <ul class="catalog-list">
+      <li class="catalog-item"><span class="title">Misa en Sol Mayor</span> – <span class="author">Juan Pérez</span> (<span class="collection">Coro Nacional</span>)</li>
+      <li class="catalog-item"><span class="title">Himno al Amanecer</span> – <span class="author">María Gómez</span> (<span class="collection">Coros Unidos</span>)</li>
+      <li class="catalog-item"><span class="title">Salmos del Alba</span> – <span class="author">Carlos Ruiz</span> (<span class="collection">Arreglos Especiales</span>)</li>
+    </ul>
+    <a href="catalog.html" class="link-primary">Ver catálogo completo</a>
+  </section>
+
+  <footer class="site-footer">
+    <p>© 2026 Donko Partituras – Archivo coral</p>
+  </footer>
+</body>
+</html>
